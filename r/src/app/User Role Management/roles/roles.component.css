@@ -1,0 +1,191 @@
+.card .card-header-danger .card-icon, .card .card-header-danger .card-text, .card .card-header-danger:not(.card-header-icon):not(.card-header-text), .card.bg-danger, .card.card-rotate.bg-danger .front, .card.card-rotate.bg-danger .back {
+    background: linear-gradient(90deg, #141413,#41555a , #a0d0de);
+}
+
+::ng-deep #data-grid-demo {
+    min-height: 530px;
+}
+
+@media (min-width: 668px) and (max-width: 1600px) {
+    ::ng-deep .dx-overlay-content.dx-resizable {
+        width  : 150px !important;
+        height : 200px !important;
+        /* width: 5%!important; */
+    }
+}
+
+@media (max-width: 667px) {
+    ::ng-deep .dx-overlay-content.dx-resizable {
+        width: 100px !important;
+    }
+}
+
+
+
+.text-main {
+    color: #369BB8;
+}
+
+.button-main {
+    background-color: #369BB8;
+}
+
+
+.state-icon {
+    left: -5px;
+}
+
+.list-group-item-primary {
+    color           : rgb(255, 255, 255);
+    background-color: rgb(66, 139, 202);
+}
+
+/* DEMO ONLY - REMOVES UNWANTED MARGIN */
+.well .list-group {
+    margin-bottom: 0px;
+}
+
+.divScrollMenu {
+    height     : 6em;
+    width      : 100%;
+    /* // overflow: auto; */
+    overflow   : auto;
+}
+
+.h2classww {
+    color           : red;
+    background-color: red
+}
+
+
+
+/* // ::ng-deep #data-grid-demo {
+//     min-height: 530px;
+// } */
+
+
+
+
+
+
+.material-switch>input[type="checkbox"] {
+    display: none;
+}
+
+.material-switch>label {
+    cursor  : pointer;
+    height  : 0px;
+    position: relative;
+    width   : 40px;
+}
+
+.material-switch>label::before {
+    background   : rgb(0, 0, 0);
+    box-shadow   : inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content      : '';
+    height       : 16px;
+    margin-top   : -8px;
+    position     : absolute;
+    opacity      : 0.3;
+    transition   : all 0.4s ease-in-out;
+    width        : 40px;
+}
+
+.material-switch>label::after {
+    background   : rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow   : 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content      : '';
+    height       : 24px;
+    left         : -4px;
+    margin-top   : -8px;
+    position     : absolute;
+    top          : -4px;
+    transition   : all 0.3s ease-in-out;
+    width        : 24px;
+}
+
+.material-switch>input[type="checkbox"]:checked+label::before {
+    background: inherit;
+    opacity   : 0.5;
+}
+
+.material-switch>input[type="checkbox"]:checked+label::after {
+    background: inherit;
+    left      : 20px;
+}
+
+
+.active-pink-2 input[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #f48fb1;
+    box-shadow   : 0 1px 0 0 #f48fb1;
+}
+
+.active-pink input[type=text] {
+    border-bottom: 1px solid #f48fb1;
+    box-shadow   : 0 1px 0 0 #f48fb1;
+}
+
+.active-purple-2 input[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #ce93d8;
+    box-shadow   : 0 1px 0 0 #ce93d8;
+}
+
+.active-purple input[type=text] {
+    border-bottom: 1px solid #ce93d8;
+    box-shadow   : 0 1px 0 0 #ce93d8;
+}
+
+.active-cyan-2 input[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #4dd0e1;
+    box-shadow   : 0 1px 0 0 #4dd0e1;
+}
+
+.active-cyan input[type=text] {
+    border-bottom: 1px solid #4dd0e1;
+    box-shadow   : 0 1px 0 0 #4dd0e1;
+}
+
+.active-cyan .fa,
+.active-cyan-2 .fa {
+    color: #4dd0e1;
+}
+
+.active-purple .fa,
+.active-purple-2 .fa {
+    color: #ce93d8;
+}
+
+.active-pink .fa,
+.active-pink-2 .fa {
+    color: #f48fb1;
+}
+
+
+.scrollable-menu {
+    height    : auto;
+    max-height: 400px;
+    overflow  : auto;
+    overflow-x: hidden;
+}
+
+
+/* // Focused Row in Table */
+::ng-deep .dx-datagrid-rowsview .dx-row-focused.dx-data-row:not(.dx-edit-row)>td:not(.dx-focused),
+.dx-datagrid-rowsview .dx-row-focused.dx-data-row:not(.dx-edit-row)>tr>td:not(.dx-focused),
+.dx-datagrid-rowsview .dx-row-focused.dx-data-row:not(.dx-edit-row) .dx-command-edit .dx-link {
+    background-color: #369bb878;
+    color           : black;
+}
+
+::ng-deep .dx-datagrid-rowsview .dx-row-focused.dx-data-row:not(.dx-edit-row)>td,
+.dx-datagrid-rowsview .dx-row-focused.dx-data-row:not(.dx-edit-row)>tr>td {
+    border-top   : 0px solid #a7d3e0;
+    border-bottom: 0px solid #a7d3e0;
+}
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: #369BB8;
+}

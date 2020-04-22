@@ -1,0 +1,861 @@
+<!--********   Table Section   ****************************************************************************************************************************-->
+
+
+
+<div class="main-content" style=" margin-top:-10px">
+        <div class="container-fluid">
+      
+          <!-- Users Table Section -->
+          <div class="row">
+            <div class="col-md-12  ">
+      
+              <div class="card">
+      
+                <!-- Title and Table Card Header  -->
+                <div class="card-header card-header-danger">
+                  <!-- <div class="col-md-4"> -->
+      
+                  <h4 class="card-title ">System Users List</h4>
+                  <!-- </div> -->
+      
+                </div>
+                <!--  End of Card Header  -->
+      
+      
+      
+                <!--  Card Body contain the Users Table    -->
+      
+                <div class="card-body">
+      
+                  <!-- Add New Role Button -->
+                  <div class="row">
+                    <div class="col-md-2">
+                      <button type="button" class="btn btn-lg pull-left" style="    background: linear-gradient(90deg, #141413,#41555a , #a0d0de);
+                      " data-toggle="modal"
+                        data-target="#bootstrapModel" (click)="resetAll();getAllRoles()" *ngIf="IsAutharized('Add User') ">
+      
+                      <a>Add New User</a>
+      
+                      </button>
+                    </div>
+                    <!-- <i class="material-icons"> add </i> -->
+                  </div>
+      
+                  <!-- Table Section and Define its Content and Events  -->
+                  <div class="table-responsive">
+      
+      
+      
+                    <!-- ****** DevExtreme Data Table  ************************************************************************************ -->
+      
+                    <div id="data-grid-demo">
+                      <!-- <dx-data-grid id="gridContainer" [dataSource]="Users" [allowColumnResizing]="true"
+                        [allowColumnReordering]="true" [columnAutoWidth]="true" [showBorders]="true" [showRowLines]="true" [focusedRowEnabled]="true"
+                        [rowAlternationEnabled]="true" height="100%" keyExpr="Id">
+      
+                        <dxo-paging [pageSize]="10"></dxo-paging>
+                        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[2,5,10,15, 20]" [showInfo]="true">
+                        </dxo-pager>
+      
+      
+      
+      
+                        <dxo-group-panel [visible]="true"></dxo-group-panel>
+                        <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+      
+      
+      
+      
+                        <dxi-column dataField="intHRId" caption="Hr ID"></dxi-column>
+                        <dxi-column dataField="strFirstName" caption="FirstName"></dxi-column>
+                        <dxi-column dataField="strLastName" caption="LastName"></dxi-column>
+                        <dxi-column dataField="strAlias" caption="Alias"></dxi-column>
+                        <dxi-column dataField="strStatus" caption="Status"></dxi-column>
+                        <dxi-column dataField="strGSM" caption="GSM"></dxi-column>
+                        <dxi-column dataField="Roles" caption="Roles" cellTemplate="UserRoles">
+                        </dxi-column>
+                        <div *dxTemplate="let data of 'UserRoles'">
+       
+                          <div>
+                            <div *ngIf="expandRowId != data.row.data.Id && data.value.length>0">
+                              {{getFirstLineFromHtmlList(data.value)}}
+                              <a style="color:#be6965" *ngIf="data.value.length>1" (click)="expandRowId = data.row.data.Id ">
+                                <img src="assets/img/control-icons/expand2.png" style="width: 23px;" class="action-icon"></a>
+                            </div>
+       
+                            <div *ngIf="expandRowId == data.row.data.Id && data.value.length>1">
+                              <div [innerHtml]="data.value"></div>
+                              <a style="color:#be6965" *ngIf="data.value.length>1" (click)="expandRowId = null">
+                                <img src="assets/img/control-icons/expand2 - Copy.png" style="width: 23px;" class="action-icon">
+                              </a>
+                            </div>
+       
+                          </div>
+       
+                        </div>
+                        <dxi-column dataField="datLastLoginDate" caption="Last LogIn Date" dataType="date"></dxi-column>
+                        <dxi-column dataField="datLastLoginTime" caption="Last LogIn Time" dataType="date"></dxi-column>
+                        <dxi-column dataField="strExtensionID" caption="Extension"></dxi-column>
+      
+      
+      
+                        <dxi-column dataField="datCreationDate" caption="Creation Date" dataType="date"
+                          [format]="{ type: 'yyyy-MM-dd' }" cellTemplate="cellTemplate1"></dxi-column>
+      
+                        <div *dxTemplate="let data of 'cellTemplate1'">
+                          <div>
+                            {{ data.value |  date:'yyyy-MM-dd'}}
+      
+                          </div>
+                        </div>
+      
+                        <dxi-column dataField="datDeactivationDate" caption="Deactivation Date" dataType="date"
+                          [format]="{ type: 'yyyy-MM-dd' }" cellTemplate="cellTemplate2"></dxi-column>
+      
+                        <div *dxTemplate="let data of 'cellTemplate2'">
+                          <div>
+                            {{ data.value |  date:'yyyy-MM-dd'}}
+      
+                          </div>
+                        </div>
+      
+      
+      
+                        <dxi-column cellTemplate="cellTemplate" [width]="250" [allowFiltering]="false" [allowSorting]="false"
+                          [allowGrouping]="false"></dxi-column>
+                        <div *dxTemplate="let cell of 'cellTemplate'">
+                          <div class="row">
+      
+                            <div class="col-md-4">
+                              <a style="color:#369BB8" data-toggle="modal" data-target="#DetailsEditModel"
+                                class="dx-link dx-link-edit glyphicon glyphicon-th-list"
+                                (click)="showUserDetails(cell.data.Id)">
+                                <u>Details</u>
+                              </a>
+                            </div>
+      
+                            <div id="DeactivateUser" class="col-md-4">
+                              <a style="color:#369BB8"
+                                class="text-main-color dx-link dx-link-edit glyphicon glyphicon-th-list"
+                                (click)="deAvtivateUser(cell.data)"
+                                *ngIf="IsAutharized('Deactivate User') && cell.data.strStatus == 'Active'" [hidden]="false">
+                                <u>Deactivate</u>
+                              </a>
+                            </div>
+      
+                            <div id="activateUser" class="col-md-4">
+                              <a style="color:#369BB8"
+                                class="text-main-color dx-link dx-link-edit glyphicon glyphicon-th-list"
+                                (click)="ActivateUser(cell.data)"
+                                *ngIf="IsAutharized('Activate User') && cell.data.strStatus == 'InActive'" [hidden]="false">
+                                <u>Activate</u>
+                              </a>
+                            </div>
+      
+                          </div>
+      
+      
+                        </div>
+      
+      
+                        <dxo-selection mode="multiple"></dxo-selection>
+      
+                        <dxo-load-panel [enabled]="true" [shading]="true">
+                        </dxo-load-panel>
+      
+      
+                        <dxo-filter-row [visible]="true"></dxo-filter-row>
+                        <dxo-header-filter [visible]="true"></dxo-header-filter>
+      
+                        <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..."></dxo-search-panel>
+      
+      
+      
+                      </dx-data-grid> -->
+      
+                    </div>
+      
+      
+      
+      
+      
+      
+      
+      
+                  </div>
+                </div>
+                <!--  End of Card Body  -->
+              </div>
+            </div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+            <!--********   Add New User Section (pop up)   ***********************************************************************************-->
+      
+      
+      
+            <!-- Modal(pop up) section -->
+      
+            <div id="bootstrapModel" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <!-- Modal(pop up) content-->
+                <div class="modal-content">
+                  <!-- model(pop up) body section -->
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="card">
+      
+                        <!--  Card header contain the Add Users     -->
+                        <div class="card-header card-header-danger">
+                          <h4 class="card-title">Add User Section</h4>
+                          <p class="card-category">Complete The Information and Submit</p>
+                        </div>
+                        <!--  END of Card Header    -->
+      
+      
+                        <!--  Card Body contain the Add Users     -->
+                        <div class="card-body">
+      
+      
+                          <form (ngSubmit)="onSubmit()" #addUserForm="ngForm">
+                            <!-- ROW 1 -->
+                            <div class="row">
+      
+      
+      
+                              <!-- Hr ID Field -->
+      
+                              <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Hr ID" type="number" [(ngModel)]="inputUser.intHRId"
+                                    name="hRId" required pattern="{{strJustNumberPattern}}" min='0' #hRId="ngModel"
+                                    [class.is-invalid]="hRId.invalid && hRId.touched">
+      
+                                  <mat-error>
+      
+                                    <!-- Messege : Required Field -->
+      
+                                    <span class="text-danger" *ngIf="hRId.invalid && hRId.touched">
+                                      - HR ID is required
+                                    </span>
+      
+      
+                                    <!-- Messege : Duplicated  , Field : errorCode = 1 || 3  -->
+      
+                                    <span class="text-danger" *ngIf="errorCode==1 || errorCode==3">
+                                      <br> - Can Not add user due to duplicated HR ID
+                                    </span>
+      
+                                  </mat-error>
+                                </mat-form-field>
+      
+                              </div>
+      
+      
+      
+      
+                              <!-- Alias Field -->
+      
+                              <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Alias" type="text" [(ngModel)]="inputUser.strAlias"
+                                    name="alias" required pattern="{{strPattern}}" #alias="ngModel"
+                                    [class.is-invalid]="alias.invalid && alias.touched">
+      
+      
+                                  <mat-error>
+      
+                                    <!-- Messege : Required Field -->
+      
+                                    <span class="text-danger" *ngIf="alias.invalid && alias.touched">
+                                      - Alias is required
+                                    </span>
+      
+                                    <!-- Messege : Duplicated  , Field : errorCode = 2 || 3  -->
+                                    <span class="text-danger" *ngIf="errorCode==2 || errorCode==3">
+                                      <br> - Can Not add user due to duplicated Alias
+                                    </span>
+      
+                                  </mat-error>
+      
+                                </mat-form-field>
+      
+      
+      
+      
+                              </div>
+      
+                            </div>
+      
+                            <!-- ROW -->
+                            <div class="row">
+      
+                              <!-- Field  : strFirstName -->
+                              <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="First Name" type="text" [(ngModel)]="inputUser.strFirstName"
+                                    name="firstName" required pattern="{{strPattern}}" #firstName="ngModel"
+                                    [class.is-invalid]="firstName.invalid && firstName.touched">
+      
+      
+                                  <mat-error>
+                                    <!-- Messege Required  -->
+                                    <span class="text-danger" *ngIf="firstName.invalid && firstName.touched"> - First Name is
+                                      required </span>
+      
+                                  </mat-error>
+      
+                                </mat-form-field>
+      
+                              </div>
+      
+      
+      
+      
+      
+      
+      
+                              <!-- Field  : LastName -->
+                              <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Last Name" type="text" [(ngModel)]="inputUser.strLastName"
+                                    #lastName="ngModel" required pattern="{{strPattern}}" name="lastName"
+                                    [class.is-invalid]="lastName.invalid && lastName.touched">
+      
+                                  <mat-error>
+                                    <!-- Messege Required  -->
+                                    <span class="text-danger" *ngIf="lastName.invalid && lastName.touched"> - Last Name is
+                                      required
+                                    </span>
+      
+                                  </mat-error>
+      
+                                </mat-form-field>
+      
+                              </div>
+      
+      
+                            </div>
+      
+      
+      
+      
+      
+      
+      
+      
+                            <div class="row">
+      
+                              <!-- Filter -->
+                              <!-- <div class="col-md-6 form-inline">
+                                <mat-form-field class="example-full-width">
+                                  <mat-icon matSuffix>search</mat-icon>
+                                  <input matInput placeholder="Search User Alias" type="text" #roleSearch name="roleName">
+                                </mat-form-field>
+                              </div> -->
+      
+      
+                              <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="GSM" type="text" [(ngModel)]="inputUser.strGSM"
+                                    #strGSM="ngModel" required pattern="{{numPattern}}" name="strGSM"
+                                    [class.is-invalid]="strGSM.invalid && strGSM.touched">
+                                  <mat-error>
+                                    <!-- Messege Required  -->
+                                    <span class="text-danger" *ngIf="strGSM.invalid && strGSM.touched"> - GSM is
+                                      required and must be 10 Digits
+                                    </span>
+      
+      
+                                  </mat-error>
+      
+                                </mat-form-field>
+      
+                              </div>
+                              <div class="col-md-6">
+                                <mat-form-field class="example-full-width">
+                                  <input matInput placeholder="Extention" type="text" [(ngModel)]="inputUser.strExtensionID"
+                                    #strExtensionID="ngModel" required pattern="{{ExtentionPattern}}" name="strExtensionID"
+                                    [class.is-invalid]="strExtensionID.invalid && strExtensionID.touched">
+                                  <mat-error>
+                                    <!--  (ngModelChange)="check('Add')" -->
+                                    <!-- Messege Required  -->
+                                    <span class="text-danger" *ngIf="strExtensionID.invalid && strExtensionID.touched"> - Extention number is
+                                      required and must be 5 Digits
+                                    </span>
+      
+      
+                                  </mat-error>
+      
+                                </mat-form-field>
+      
+                              </div>
+                              <!-- <mat-checkbox type="checkbox" name="nine" [(ngModel)]="checked"  data-md-icheck (change)="updateExtention($event)" style="margin-top: 4%;">this Extention is five digits & Starts with number 9?</mat-checkbox> -->
+                            </div>
+      
+                            <div class="row">
+      
+                              <!-- Filter -->
+                              <div class="col-md-6 form-inline">
+                                <mat-form-field class="example-full-width">
+                                  <!-- <mat-icon matSuffix>search</mat-icon> -->
+                                  <img src="assets/img/control-icons/search2.png" style="width: 23px;margin-left: 88%;
+                                  margin-bottom: -13%;">
+                                  <input matInput placeholder="Search Role" type="text" #roleSearch name="roleName">
+                                </mat-form-field>
+                              </div>
+                              </div>
+      
+      
+                            <!-- Select roles -->
+                            <div class="scrollable-menu">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <h5 class="" style="color:#369BB8"> Select Roles : </h5>
+      
+                                  <div *ngFor="let item of RolesCopy | strNamefilter : roleSearch.value">
+      
+                                    <h3 *ngIf="Users.length==0">Empty</h3>
+                                    <mat-checkbox color="primary" id="{{item.strName}}" type="checkbox"
+                                      (change)="updateCheckedRoles(item)" [checked]="item['Checked']" name="{{item.strName}}"
+                                      value="{{item.Id}}">
+                                      {{item.strName}}
+                                    </mat-checkbox>
+                                  </div>
+      
+                                </div>
+      
+                                <!-- Show selected roles -->
+                                <div class="col-md-6">
+      
+                                  <div
+                                    style="color:black;font-style: unset;font-size: small;font-family: monospace;font-weight: bold;">
+                                    <div>
+                                      <u>Selected Roles :</u>
+                                      <ul>
+                                         <li  *ngFor="let item of (RolesCopy)" |> <!--filterValueOfKey:'Checked':true )-->
+                                          <span style="color:#369BB8;font-style: normal">
+                                            {{item.strName}}
+                                          </span>
+                                        </li>
+                                      </ul>
+      
+                                    </div>
+                                  </div>
+      
+                                </div>
+      
+                              </div>
+      
+                            </div>
+      
+      
+                            <!-- Button  : Submit -->
+      
+                            <button type="submit" mat-button
+                              [disabled]="!addUserForm.form.valid ||  checkedRoles.length ==0   "
+                              class=" btn pull-right" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);">Submit</button>
+      
+      
+                            <button id="close_modal" class="btn pull-right" data-dismiss="modal"
+                              (click)="resetAll()" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);">Close</button>
+      
+      
+      
+      
+      
+                            <div class="clearfix"></div>
+                          </form>
+      
+      
+                          <!-- End Of Card Body -->
+                        </div>
+      
+                      </div>
+      
+                    </div>
+      
+      
+      
+      
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+            <!--********   Edit User Section (pop up)   ***********************************************************************************-->
+      
+      
+      
+            <!-- Modal(pop up) section -->
+      
+            <div id="DetailsEditModel" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <!-- Modal(pop up) content-->
+                <div class="modal-content">
+                  <!-- model(pop up) body section -->
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="card">
+      
+                        <!--  Card header contain the Add Users     -->
+                        <div class="card-header card-header-danger">
+                          <h4 class="card-title">{{UserDetails.strAlias}} Details</h4>
+                          <p class="card-category">Complete The Information and Submit</p>
+                        </div>
+                        <!--  END of Card Header    -->
+      
+      
+                        <!--  Card Body contain the Add Users     -->
+                        <div class="card-body">
+      
+      
+                          <form #EditUserForm="ngForm">
+      
+                            <div class="row" style="height: 50px;">
+      
+      
+      
+                              <!-- Hr ID Field -->
+      
+                              <div class="col-md-6">
+                                <mat-form-field *ngIf="UserDetails.Id == editUserId" class="example-full-width">
+                                  <input matInput placeholder="Hr ID" type="number" [(ngModel)]="UserDetails.intHRId"
+                                    name="hRId" required pattern="{{strJustNumberPattern}}" min='0' #hRId="ngModel"
+                                    [class.is-invalid]="hRId.invalid && hRId.touched">
+      
+                                  <mat-error>
+      
+                                    <!-- Messege : Required Field -->
+      
+                                    <span class="text-danger" *ngIf="hRId.invalid && hRId.touched">
+                                      - HR ID is required
+                                    </span>
+      
+      
+                                    <!-- Messege : Duplicated  , Field : errorCode = 1 || 3  -->
+      
+                                    <span class="text-danger" *ngIf="errorCode==1 || errorCode==3">
+                                      <br> - Can Not add user due to duplicated HR ID
+                                    </span>
+      
+                                  </mat-error>
+                                </mat-form-field>
+                                <div *ngIf="UserDetails.Id !== editUserId">
+      
+                                  <label for="intHRId">Hr ID : </label>
+                                  <span id="intHRId">{{" "+UserDetails.intHRId}}</span>
+      
+                                </div>
+      
+                              </div>
+      
+      
+      
+      
+                              <!-- Alias Field -->
+      
+                              <div class="col-md-6">
+                                <mat-form-field *ngIf="UserDetails.Id == editUserId" class="example-full-width">
+                                  <input matInput placeholder="Alias" type="text" [(ngModel)]="UserDetails.strAlias"
+                                    name="alias" required pattern="{{strPattern}}" #alias="ngModel"
+                                    [class.is-invalid]="alias.invalid && alias.touched">
+      
+      
+                                  <mat-error>
+      
+                                    <!-- Messege : Required Field -->
+      
+                                    <span class="text-danger" *ngIf="alias.invalid && alias.touched">
+                                      - Alias is required
+                                    </span>
+      
+                                    <!-- Messege : Duplicated  , Field : errorCode = 2 || 3  -->
+                                    <span class="text-danger" *ngIf="errorCode==2 || errorCode==3">
+                                      <br> - Can Not add user due to duplicated Alias
+                                    </span>
+      
+                                  </mat-error>
+      
+                                </mat-form-field>
+                                <div *ngIf="UserDetails.Id !== editUserId">
+      
+                                  <label for="strAlias">Alias : </label>
+                                  <span id="strAlias">{{" "+UserDetails.strAlias}}</span>
+      
+                                </div>
+      
+      
+      
+      
+                              </div>
+      
+                            </div>
+      
+      
+      
+                            <!-- ROW -->
+                            <div class="row" style="height: 50px;">
+      
+                              <!-- Field  : strFirstName -->
+                              <div class="col-md-6">
+                                <mat-form-field *ngIf="UserDetails.Id == editUserId" class="example-full-width">
+                                  <input matInput placeholder="First Name" type="text" [(ngModel)]="UserDetails.strFirstName"
+                                    name="firstName" required pattern="{{strPattern}}" #firstName="ngModel"
+                                    [class.is-invalid]="firstName.invalid && firstName.touched">
+      
+      
+                                  <mat-error>
+                                    <!-- Messege Required  -->
+                                    <span class="text-danger" *ngIf="firstName.invalid && firstName.touched"> - First Name is
+                                      required </span>
+      
+                                  </mat-error>
+      
+                                </mat-form-field>
+                                <div *ngIf="UserDetails.Id !== editUserId">
+      
+                                  <label for="strFirstName">FirstName : </label>
+                                  <span id="strFirstName">{{" "+UserDetails.strFirstName}}</span>
+      
+                                </div>
+      
+                              </div>
+      
+      
+      
+      
+      
+      
+      
+                              <!-- Field  : LastName -->
+                              <div class="col-md-6">
+                                <mat-form-field *ngIf="UserDetails.Id == editUserId" class="example-full-width">
+                                  <input matInput placeholder="Last Name" type="text" [(ngModel)]="UserDetails.strLastName"
+                                    #lastName="ngModel" required pattern="{{strPattern}}" name="lastName"
+                                    [class.is-invalid]="lastName.invalid && lastName.touched">
+      
+                                  <mat-error>
+                                    <!-- Messege Required  -->
+                                    <span class="text-danger" *ngIf="lastName.invalid && lastName.touched"> - Last Name is
+                                      required
+                                    </span>
+      
+                                  </mat-error>
+      
+                                </mat-form-field>
+                                <div *ngIf="UserDetails.Id !== editUserId">
+      
+                                  <label for="strLastName">Last Name : </label>
+                                  <span id="strLastName">{{" "+UserDetails.strLastName}}</span>
+      
+                                </div>
+      
+                              </div>
+      
+      
+                            </div>
+      
+      
+                            <!-- ROW -->
+      
+                            <div class="row" style="height: 50px;">
+                            <div class="col-md-6">
+                              <mat-form-field  *ngIf="UserDetails.Id == editUserId" class="example-full-width">
+                                <input matInput placeholder="GSM" type="text" [(ngModel)]="UserDetails.strGSM"
+                                  #strGSM="ngModel" required pattern="{{numPattern}}" name="strGSM"
+                                  [class.is-invalid]="strGSM.invalid && strGSM.touched">
+                                <mat-error>
+                                  <!-- Messege Required  -->
+                                  <span class="text-danger" *ngIf="strGSM.invalid && strGSM.touched"> - GSM is
+                                    required and must be 10 Digits
+                                  </span>
+                                </mat-error>
+                              </mat-form-field>
+                              <div *ngIf="UserDetails.Id !== editUserId">
+      
+                                <label for="strGSM">GSM : </label>
+                                <span id="strGSM">{{" "+UserDetails.strGSM}}</span>
+      
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <mat-form-field  *ngIf="UserDetails.Id == editUserId" class="example-full-width">
+                                <input matInput placeholder="Extention" type="text" [(ngModel)]="UserDetails.strExtensionID"
+                                  #strExtension="ngModel" required pattern="{{ExtentionPattern}}" name="strExtension"
+                                  [class.is-invalid]="strExtension.invalid && strExtension.touched">
+                                <mat-error>
+                                  <!--  (ngModelChange)="check('Edit')" -->
+                                  <!-- Messege Required  -->
+                                  <span class="text-danger" *ngIf="strExtension.invalid && strExtension.touched"> - Extention is
+                                    required and must be 5 Digits
+                                  </span>
+                                </mat-error>
+                              </mat-form-field>
+                              <div *ngIf="UserDetails.Id !== editUserId">
+      
+                                <label for="strExtensionID">Extention : </label>
+                                <span id="strExtensionID">{{" "+UserDetails.strExtensionID}}</span>
+      
+                              </div>
+      
+                            </div>
+      
+      
+                          </div>
+      
+                          <!-- ROW -->
+                          <div class="row"  style="height: 50px;">
+                            <div class="col-md-6">
+                              <div *ngIf="UserDetails.Id !== editUserId">
+      
+                                <label for="strLastName">Creation Date : </label>
+                                <span
+                                id="strLastName">{{" "+UserDetails.datCreationDate | date:"dd/MM/yy"}}</span>
+      
+                              </div>
+                            </div>
+      
+                            <div class="col-md-6">
+                              <div *ngIf="UserDetails.strStatus =='InActive' && UserDetails.datDeactivationDate !== null">
+      
+                                <label for="strLastName">Deactivation Date : </label>
+                                <span
+                                id="strLastName">{{" "+UserDetails.datDeactivationDate | date:"dd/MM/yy"}}</span>
+      
+                              </div>
+                            </div>
+                            <!-- <mat-checkbox *ngIf="UserDetails.Id == editUserId" type="checkbox" name="nine" [(ngModel)]="checked"  data-md-icheck (change)="updateExtention1($event)" style="margin-bottom: 4%;">this Extention is five digits & Starts with number 9?</mat-checkbox> -->
+      
+                          </div>
+                          <!-- *roles list   -->
+                            <hr>
+                            <!-- Select roles -->
+                            <div *ngIf="UserDetails.Id == editUserId" class="scrollable-menu">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <h5 class="" style="color:#369BB8"> Select Roles : </h5>
+      
+                                  <div *ngFor="let item of RolesCopy | strNamefilter : roleSearch.value">
+      
+                                    <h3 *ngIf="Users.length==0">Empty</h3>
+                                    <mat-checkbox color="primary" id="{{item.strName}}" type="checkbox"
+                                      (change)="updateCheckedRoles(item)" [checked]="item['Checked']" name="{{item.strName}}"
+                                      value="{{item.Id}}">
+                                      {{item.strName}}
+                                    </mat-checkbox>
+                                  </div>
+      
+                                </div>
+      
+                                <!-- Show selected roles -->
+                                <div class="col-md-6">
+      
+                                  <div
+                                    style="color:black;font-style: unset;font-size: small;font-family: monospace;font-weight: bold;">
+                                    <div>
+                                      <u>Selected Roles :</u>
+                                      <ul>
+                                        <li *ngFor="let item of (RolesCopy)"> <!--| filterValueOfKey:'Checked':true--> 
+                                          <span style="color:#369BB8;font-style: normal">
+                                            {{item.strName}}
+                                          </span>
+                                        </li>
+                                      </ul>
+      
+                                    </div>
+                                  </div>
+      
+                                </div>
+      
+                              </div>
+      
+                            </div>
+      
+      
+      
+                            <div class="col-xs-2 list-group" *ngIf="UserDetails.Id !== editUserId">
+                              <ul>
+                                <li style="color:#369BB8">
+                                  <h4>Roles : </h4>
+                                </li>
+      
+                                <a style="color:#AAAAAA" *ngIf="UserDetails['Roles'].length==0">No Roles</a>
+      
+                                <li *ngFor="let item of UserDetails['Roles']">
+                                  {{item.strName}}
+                                </li>
+                              </ul>
+                            </div>
+      
+      
+      
+      
+      
+      
+                            <!-- Buttons -->
+      
+                            <button
+                              *ngIf="IsAutharized('Edit User') && UserDetails.Id !== editUserId && UserDetails.strStatus == 'Active'"
+                              type="submit" mat-button class=" btn pull-right"
+                              (click)="edit(UserDetails.Id)" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);" >Edit</button>
+      
+      
+                            <button *ngIf="UserDetails.Id == editUserId" type="submit"
+                              [disabled]="!EditUserForm.form.valid || checkedRoles.length ==0  "
+                              class="btn pull-right" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);" (click)="update(UserDetails)">Save</button>
+      
+                            <button
+                              *ngIf="IsAutharized('Deactivate User') && UserDetails.strStatus =='Active' && UserDetails.Id !== editUserId"
+                              type="button" class="btn btn-danger pull-right"
+                              (click)="deAvtivateUser(UserDetails)">Deactivate</button>
+      
+                              <button
+                              *ngIf="IsAutharized('Activate User') && UserDetails.strStatus =='InActive' && UserDetails.Id !== editUserId"
+                              type="button" class="btn pull-right" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);"
+                              (click)="ActivateUser(UserDetails)">Activate</button>
+      
+                            <button *ngIf="UserDetails.Id == editUserId" class="btn pull-right" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);"
+                              (click)="cancelEdit(UserDetails.Id);">Cancel</button>
+      
+                            <button [hidden]="UserDetails.Id == editUserId " id="close_modal_1"
+                              class="btn btn-danger pull-right" data-dismiss="modal">Close</button>
+      
+      
+                            <div class="clearfix"></div>
+      
+                          </form>
+      
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>

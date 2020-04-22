@@ -1,0 +1,592 @@
+<p>roles works!</p>
+<!-- ************* Role Table Section *******************************************************************************     -->
+
+   
+   
+
+<div class="main-content" style=" margin-top:-10px">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+                                           
+                 <div class="card">
+                                       
+                  <!-- <h1 class="card-header" > </h1> -->
+                                           
+                  <div class="card-header card-header-danger">
+                                                           
+                      <h4 class="card-title ">Roles List</h4>
+                                                           
+                      <p class="card-category"> Here is a subtitle for this table</p>
+                                                       
+                 
+                                                       
+                  </div>
+                                                       
+                  <div class="card-body">
+
+
+                    <!-- Add New Role Button -->
+
+                      <button  
+                      type="button"
+                      class="btn button-main btn-lg pull-left"
+ 
+    data-toggle="modal"  style="background:  linear-gradient(90deg, #141413,#41555a , #a0d0de); "
+                      data-target="#bootstrapModel"
+                      (click)="getAllSystemUsers();clearFields();showDetails=false;"
+                      *ngIf="IsAutharized('Add Role')">
+                                                     
+                          <a>Add New Role</a>
+
+                                                             
+                      </button>
+                      <!-- <i class="material-icons"> add  </i>  -->
+
+                       <!-- Roles Table  -->
+
+                      <div class="table-responsive">
+                                                               
+                       
+                                             
+
+<!-- ****** DevExtreme Data Table  ************************************************************************************ -->
+
+    <div  id="data-grid-demo">        
+        <jqxGrid
+            [width]="90%" [source]="roles" [columns]="columns"
+            [pageable]="true" [autoheight]="true" [sortable]="true" 
+            [altrows]="true"  [enabletooltips]="true"  [editable]="false" 
+            [selectionmode]="'multiplecellsadvanced'" [columngroups]="columngroups">
+        </jqxGrid>
+              </div>
+
+                     
+            </div>
+
+                 
+                 
+                                                     
+        </div>
+                                       
+    </div>
+                                     
+   
+</div>
+                             
+
+
+   
+<!-- ************* End Of Role Table Section *******************************************************************************     -->
+
+
+
+ 
+
+
+
+
+
+<!--******  Add Role Section (pop up)  **************************************************************************************-->
+
+
+
+<!-- open a modal window by clicking button-->
+
+
+   
+   
+        <!-- Modal(pop up) section -->
+       
+       
+   <div id="bootstrapModel" class="modal fade" role="dialog">
+    <div class="modal-dialog" >
+       
+       
+         <!-- Modal(pop up) content-->
+       
+       
+         <div class="modal-content" style="width: max-content;">
+       
+   
+       
+        <!-- model(pop up) body section -->
+       
+         
+    <div class="modal-body"  >
+        <div class="row">
+        <div class="card">
+         
+            <!--  Card header contain the Add Users     -->
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">Add Role Section</h4>
+                <p class="card-category">Complete The Information and Submit</p>
+            </div>
+                <!--  END of Card Header    -->
+
+         
+                           <!--  Card Body contain the Add Users     -->
+         <div class="card-body">
+            <form #addRoleForm="ngForm" id="addRoleForm" >        
+                <div class="row">
+                     <div class="col-md-4">
+                         <mat-form-field class="example-full-width">
+                         <input matInput placeholder="Name"
+                         type="text" [(ngModel)]="newRole.strName"
+                            name="name" required  pattern="{{strPattern}}"
+                            #strName="ngModel" [class.is-invalid]="strName.invalid && strName.touched">
+
+                             <!-- Messege : Required Field -->
+
+
+                            <mat-error  *ngIf="strName.invalid && strName.touched">
+                                 <span  class="text-danger" >
+                                      - Name is required
+                                   </span>
+                                   
+                              </mat-error>
+
+                             
+
+                         </mat-form-field>
+                         
+                   </div>
+                   <div class="col-md-4">
+                         <mat-form-field class="example-full-width">
+                         <input matInput placeholder="Description" type="text" [(ngModel)]="newRole.strDescription"  name="description" pattern="{{strPattern}}"
+                         #strDescription="ngModel" [class.is-invalid]="strDescription.invalid && strDescription.touched" required>
+
+                         <mat-error  *ngIf="strDescription?.invalid && strDescription.touched">
+                            <span  class="text-danger" >
+                                 - Description is required
+                              </span>
+                             
+                         </mat-error>
+
+                         </mat-form-field>
+                    </div>
+             
+                </div>
+                <!-- <div class="row"></div> -->
+               
+<!--                
+                 <div class="row" >
+                     
+                                 <div class="col-md-4 " style="color:black;font-style: unset;font-size: small;font-family: monospace;font-weight: bold;" >
+                                     <div *ngIf=" RoleUsers.length>0">
+                                        <u>Selected Users :</u>
+                                        <span style="color:#369BB8;font-style: normal" *ngFor="let _user of RoleUsers;let i=index" >{{_user.strAlias}}{{i == RoleUsers.length-1 ? " " : " , "}}</span>
+                                    </div>
+                                </div>
+                               <div class="col-md-4 " style="color:black;font-style: unset;font-size: small;font-family: monospace;font-weight: bold;" >
+                                   <div *ngIf="RolePrivileges.length>0">
+                                    <u>Selected Privileges :</u>
+                                         <span style="color:#369BB8;font-style: normal" *ngFor="let _privilege of RolePrivileges;let i=index">{{_privilege.strName}}{{i == RolePrivileges.length-1 ? " " : " , "}}</span>
+                                    </div>
+                               </div>
+
+                               
+                               <div class="col-md-4" style="color:black;font-style: unset;font-size: small;font-family: monospace;font-weight: bold;" >
+                                <div *ngIf="RoleManagers.length>0">
+                                 <u>Selected Role Managers :</u>
+                                      <span style="color:#67696a;font-style: normal" *ngFor="let _roleManager of RoleManagers;let i=index">{{_roleManager.strName}}{{i == RoleManagers.length-1 ? " " : " , "}}</span>
+                                 </div>
+                            </div>
+                       
+                         
+                    </div> -->
+
+
+                 <div class="row">
+
+                        <!-- Filter -->
+                        <div class="col-md-4 form-inline">
+                                <mat-form-field class="example-full-width">
+                                    <img src="assets/img/control-icons/search2.png" style="width: 23px;margin-left: 88%;
+                                    margin-bottom: -13%;">
+                                    <input matInput placeholder="Search User Alias" type="text" #UserSearch name="userAlias">
+                                </mat-form-field>
+                        </div>
+                             <!-- Filter -->
+                        <div class="col-md-4">
+                            <mat-form-field class="example-full-width">
+                                <img src="assets/img/control-icons/search2.png" style="width: 23px;margin-left: 88%;
+                                margin-bottom: -13%;">
+                               <input matInput placeholder="Search Privileg" type="text" #PrivilegesSearch name="privilegeName">
+                             </mat-form-field>
+                             <span class="glyphicon glyphicon-search"></span>
+                          </div>
+
+                          <div class="col-md-4">
+                            <mat-form-field class="example-full-width">
+                                <img src="assets/img/control-icons/search2.png" style="width: 23px;margin-left: 88%;
+                                margin-bottom: -13%;">
+                               <input matInput placeholder="Search Role Manager" type="text" #RoleManagerSearch name="roleManagerName">
+                             </mat-form-field>
+                             <span class="glyphicon glyphicon-search"></span>
+                          </div>
+                 
+
+                 </div>
+                  <!-- <div class="row col-md-12"> -->
+                    <div class="scrollable-menu" >
+                        <div class="row" >
+                        <div class="col-md-4" >
+                            <h5 class="" style="color:#369BB8" > Select Users : </h5>
+                        <!-- checkboxes list  -->
+                            <div *ngFor="let _user of Users | Usersfilter : UserSearch.value">
+                               
+                            <h3 *ngIf="Users.length==0">Empty</h3>
+                            <mat-checkbox color="primary" id="{{_user.strAlias}}" type="checkbox"  
+                                (change)="updateCheckedUsers(_user)"  [checked]="_user.checked"
+                                name="{{_user.strAlias}}"  value="{{_user.Id}}">
+                                {{_user.strAlias}}
+                                </mat-checkbox>
+                            </div>
+       
+
+                    </div>
+                   <!-- Privileges Checkbox list tag -->
+
+                   <div class="col-md-4">
+                     <h5 class="" style="color:#369BB8">Select Privileges : </h5>
+
+                       <div *ngFor="let _privilege of Privileges | strNamefilter : PrivilegesSearch.value">
+                            <mat-checkbox color="primary" id="{{_privilege['strName']}}" type="checkbox"
+                            (change)="updateCheckedPrinileges(_privilege)" [checked]="_privilege.checked"
+                             name="{{_privilege['strName']}}"  value="{{_privilege.Id}}">
+
+                             {{_privilege.strName}}
+                            </mat-checkbox >
+                          </div>
+                    </div>
+             
+                <div class="col-md-4">
+                    <h5 class="" style="color:#67696a">Select Role Manager : </h5>
+
+                      <div *ngFor="let _roleManager of RolesM | strNamefilter : RoleManagerSearch.value">
+                           <mat-checkbox color="primary" id="{{_roleManager.strName}}" type="checkbox"
+                           (change)="updateCheckedRoles(_roleManager)" [checked]="_roleManager['Checked']" name="{{_roleManager.strName}}"
+                           value="{{_roleManager.Id}}">
+                           {{_roleManager.strName}}
+                         </mat-checkbox>
+                         </div>
+                     
+                   </div>
+                </div>
+             </div>
+                       
+             <button  [disabled]="!addRoleForm.form.valid || checkedRoles.length ==0" type="submit" class="btn  pull-right" (click)="addRole()" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);" >Submit</button>
+                   
+                     
+             <button id="close_modal" type="button" class="btn  pull-right" data-dismiss="modal" (click)="resetAll()" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);">Cancel</button>
+ 
+           
+            </form>
+             
+        </div>
+               
+           
+     </div>
+               
+       
+    </div>
+               
+   </div>  
+ 
+  </div>
+   
+ </div>
+
+</div>
+
+<!-- </div> -->
+
+
+
+
+
+
+<!-- Details popup -->
+<!-- ************************************************************************************************************************************************** -->
+
+   
+   
+   
+   
+        <!-- Modal(pop up) section -->
+       
+       
+   <div id="bootstrapDetailEditModel" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+       
+       
+         <!-- Modal(pop up) content-->
+       
+       
+         <div class="modal-content" style="width: max-content;">
+       
+   
+       
+        <!-- model(pop up) body section -->
+       
+         
+    <div class="modal-body" >
+        <div class="row">
+        <div class="card">
+         
+            <!--  Card header contain the Add Users     -->
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">{{strEditableRolName}} Role Page</h4>
+                <p class="card-category">You Can Browse and Edit The below Information ...</p>
+            </div>
+                <!--  END of Card Header    -->
+
+         
+                           <!--  Card Body contain the Add Users     -->
+         <div class="card-body">
+            <form #editDetailsForm="ngForm" id="editDetailsForm" >    
+               
+   
+                    <div class="row" style=" height: 80px;">
+                           
+                            <!-- Name -->
+                            <div class="col-md-6">
+                                <mat-form-field class="example-full-width" *ngIf="editedRoleId==RoleDetails.Id">
+                                <input matInput placeholder="Name"
+                                type="text" [(ngModel)]="RoleDetails.strName"
+                                   name="name" required  pattern="{{strPattern}}"
+                                   #strName="ngModel" [class.is-invalid]="strName.invalid && strName.touched">
+       
+                                    <!-- Messege : Required Field -->
+       
+       
+                                   <mat-error  *ngIf="strName.invalid && strName.touched">
+                                        <span  class="text-danger" >
+                                             - Name is required
+                                          </span>
+                                         
+                                     </mat-error>
+       
+                                   
+       
+                                </mat-form-field>
+                               
+                                <div *ngIf="editedRoleId!==RoleDetails.Id" style="padding-left: 20px;">
+                                        <label>
+                                                Role Name :
+                                    </label>
+                                   
+                                    <span>{{RoleDetails.strName}}</span>
+                               </div>
+                               
+                          </div>
+
+
+                          <!-- Description  -->
+                          <div class="col-md-6" >
+                                <mat-form-field class="example-full-width" *ngIf="editedRoleId == RoleDetails.Id">
+                                    <input matInput placeholder="Description" type="text" [(ngModel)]="RoleDetails.strDescription"  name="description">
+                                </mat-form-field>
+                       
+                                 <div *ngIf="editedRoleId!==RoleDetails.Id" style="padding-left: 20px;">
+                                    <label>
+                                            Role Description :
+                                     </label>
+                               
+                                    <span>{{RoleDetails.strDescription}}</span>
+                               </div>
+                         </div>
+                     
+                       </div>
+                       <div class="row"></div>
+                       
+       
+<!--
+                        <div class="row" *ngIf="editedRoleId == RoleDetails.Id">
+                         
+                         
+                                     <div class="col-md-4" style="color:black;font-style: unset;font-size: small;font-family: monospace;font-weight: bold;" >
+                                         <div *ngIf=" RoleUsers.length>0">
+                                            <u>Selected Users :</u>
+                                            <span style="color:#369BB8;font-style: normal" *ngFor="let _user of RoleUsers;let i=index" >{{_user.strAlias}}{{i == RoleUsers.length-1 ? " " : " , "}}</span>
+                                        </div>
+                                    </div>
+                                   <div class="col-md-4 " style="color:black;font-style: unset;font-size: small;font-family: monospace;font-weight: bold;" >
+                                       <div *ngIf="RolePrivileges.length>0">
+                                        <u>Selected Privileges :</u>
+                                             <span style="color:#369BB8;font-style: normal" *ngFor="let _privilege of RolePrivileges;let i=index">{{_privilege.strName}}{{i == RolePrivileges.length-1 ? " " : " , "}}</span>
+                                        </div>
+                                   </div>
+
+                                       
+                               <div class="col-md-4" style="color:black;font-style: unset;font-size: small;font-family: monospace;font-weight: bold;" >
+                                <div *ngIf="RoleManagers.length>0">
+                                 <u>Selected Role Managers :</u>
+                                      <span style="color:#369BB8;font-style: normal" *ngFor="let _roleManager of RoleManagers;let i=index">{{_roleManager.strName}}{{i == RoleManagers.length-1 ? " " : " , "}}</span>
+                                 </div>
+                            </div>
+                           
+                             
+                        </div> -->
+       
+       
+                        <div class="row" *ngIf="editedRoleId == RoleDetails.Id">
+       
+                               <!-- Filter -->
+                               <div class="col-md-4 form-inline" >
+                                       <mat-form-field class="example-full-width">
+                                          <!-- <mat-icon matSuffix>search</mat-icon> -->
+                                          <img src="assets/img/control-icons/search2.png" style="width: 23px;margin-left: 88%;
+                            margin-bottom: -13%;">
+                                           <input matInput placeholder="Search User Alias" [(ngModel)]="filterUserWord" type="text" #UserSearch1="ngModel" name="userAlias">
+                                       </mat-form-field>
+                               </div>
+                                    <!-- Filter -->
+                               <div class="col-md-4">
+                                   
+                                   <mat-form-field class="example-full-width">
+                                      <!-- <mat-icon matSuffix>search</mat-icon> -->
+                                      <img src="assets/img/control-icons/search2.png" style="width: 23px;margin-left: 88%;
+                            margin-bottom: -13%;">
+                                      <input matInput placeholder="Search Privileg" type="text"  [(ngModel)]="filterPrivilegeWord" #PrivilegesSearch1 name="privilegeName">
+                                    </mat-form-field>
+                                    <span class="glyphicon glyphicon-search"></span>
+                                 </div>
+
+                                 <div class="col-md-4">
+                                   
+                                    <mat-form-field class="example-full-width">
+                                       <!-- <mat-icon matSuffix>search</mat-icon> -->
+                                       <img src="assets/img/control-icons/search2.png" style="width: 23px;margin-left: 88%;
+                            margin-bottom: -13%;">
+                                       <input matInput placeholder="Search Role's Manager" type="text"  [(ngModel)]="filterRolesManager" #RolesManagersSearch1 name="roleManagerName">
+                                     </mat-form-field>
+                                     <span class="glyphicon glyphicon-search"></span>
+                                  </div>
+                       
+       
+                        </div>
+
+                           <div class="scrollable-menu" >
+                               <div class="row" >
+                                <div class="col-md-4">
+                                   <div *ngIf="editedRoleId == RoleDetails.Id">
+                                        <h5 class="" style="color:#369BB8"> Select Users : </h5>
+                               
+                                        <!-- checkboxes list  -->
+                                        <div *ngFor="let _user of Users | Usersfilter : filterUserWord">
+                                           
+                                        <h3 *ngIf="Users.length==0" >Empty</h3>
+                                        <mat-checkbox color="primary" id="{{_user.strAlias}}" type="checkbox"  
+                                            (change)="updateCheckedUsers(_user)"  [checked]="_user.checked"
+                                            name="{{_user.strAlias}}"  value="{{_user.Id}}">
+                                            {{_user.strAlias}}
+                                            </mat-checkbox>
+                                        </div>
+                                      </div>
+       
+                                        <div class="col-xs-2 list-group" *ngIf="RoleDetails.Id !== editedRoleId">
+                                            <div>                                                          
+                                                    <ul>
+                                                        <li style="color:#369BB8"> <h4>Users : </h4></li>
+                                                        <li *ngFor="let _user of RoleUsersDatails" ><h5>{{_user.strAlias}}</h5></li>
+                                                    </ul>              
+                                            </div>
+                                        </div>
+       
+       
+                                 </div>
+       
+                              <!-- Privileges Checkbox list tag -->
+                                 
+                             <div class="col-md-4">
+                                <div *ngIf="editedRoleId == RoleDetails.Id">
+
+                                    <h5 class="" style="color:#369BB8">Select Privileges : </h5>
+           
+                                    <!-- checkboxes list  -->
+                                    <div *ngFor="let _privilege of Privileges | strNamefilter : filterPrivilegeWord">
+
+                                        <mat-checkbox color="primary" id="{{_privilege.strName}}" type="checkbox"
+                                        (change)="updateCheckedPrinileges(_privilege)" [checked]="_privilege.checked"
+                                            name="{{_privilege.strName}}"  value="{{_privilege.Id}}">
+           
+                                            {{_privilege.strName}}
+                                        </mat-checkbox >
+                                    </div>
+                                </div>
+                                <div class="list-group col-xs-2" *ngIf="RoleDetails.Id !== editedRoleId">
+                                        <div>          
+                                                <ul>
+                                                    <li  style="color:#369BB8"> <h4>Privileges : </h4></li>
+
+                                                    <li *ngFor="let item of RolePrivilegesDatails"><h5>{{item.strName}}</h5></li>
+                                                </ul>
+           
+                                         </div>
+                           
+                                 </div>
+                             
+                           </div>
+
+
+                           <div class="col-md-4">
+                            <div *ngIf="editedRoleId == RoleDetails.Id">
+
+                                <h5 class="" style="color:#369BB8">Select Managed By : </h5>
+       
+                                <div *ngFor="let _roleManager of RolesM | strNamefilter : filterRolesManager ">
+                                    <mat-checkbox color="primary" id="{{_roleManager['strName']}}" type="checkbox"
+                                    (change)="updateCheckedRoles(_roleManager)" [checked]="_roleManager.Checked"
+                                        name="{{_roleManager['strName']}}"  value="{{_roleManager.Id}}">
+       
+                                        {{_roleManager.strName}}
+                                    </mat-checkbox >
+                                </div>
+                            </div>
+                            <div class="list-group col-xs-2" *ngIf="RoleDetails.Id !== editedRoleId">
+                                    <div>          
+                                            <ul>
+                                                <li  style="color:#369BB8"><h4>Managed by: </h4></li>
+
+                                                <li *ngFor="let item of RoleManagerssDatails"><h5>{{item.strName}}</h5></li>
+                                            </ul>
+       
+                                     </div>
+                       
+                             </div>
+                         
+                       </div>
+
+
+                       </div>
+           
+                         
+                    </div>
+                         
+                   
+                    <button  type="submit" class="btn  pull-right" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);"
+                    (click)="edit(RoleDetails.Id)" *ngIf="IsAutharized('Edit Role') && RoleDetails.Id !== editedRoleId && RoleDetails.strStatus == 'Active'" >Edit</button>
+                   
+                    <button  [disabled]="!editDetailsForm.form.valid" type="submit" class="btn pull-right" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);"
+                     (click)="update(RoleDetails)" *ngIf="RoleDetails.Id == editedRoleId" >Save</button>
+                   
+                             
+                    <button id="close_modal1" type="button" class="btn pull-right" data-dismiss="modal" style="background:linear-gradient(90deg, #41555a,#41555a , #41555a);"
+                    (click)="cancelEdit(RoleDetails.Id);resetAll();">Cancel</button>
+                   
+                    <button  type="submit"  class="btn btn-danger pull-right"
+                    (click)="deAvtivateRole(RoleDetails)"
+                    *ngIf="IsAutharized('Deactivate Role') && RoleDetails.Id !== editedRoleId && RoleDetails.strStatus == 'Active'">Deactivate</button>
+
+
+            </form>
+
+        </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>

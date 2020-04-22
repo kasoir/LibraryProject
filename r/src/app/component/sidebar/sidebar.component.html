@@ -1,0 +1,102 @@
+<div class="logo" style="margin-top:30px">
+        <a href="#">
+            <div class="container" style="padding:25px; margin:20px">
+                <div class="row">
+                    <div class="col-xs-6">
+                        
+                        
+                        
+                        <div class="col-md-12">
+                            <span style="font-weight: bold;font-size: xx-large;color: azure;margin-left: -4%">
+                                Competition
+                            </span>
+                            <img src="assets/img/untitled.png" style="padding-right: 4%;margin-left: -6%;
+                            width: inherit;">
+                        </div>
+    
+                        <!-- <div class="col-md-12" style="padding-left: 20px;font-size: smaller;color:#369bb896 ">
+                                <span>
+                                Customer Action Tracking
+                            </span>
+                            </div> -->
+                    </div>
+    
+                    <!-- <div class="col-xs-6">
+                    <img src="assets/img/MainIcon.svg" width="45px" height="60px" class="img-circle"  />
+                </div> -->
+    
+                </div>
+    
+    
+            </div>
+    
+    
+            <!-- <img src="assets/img/Enc_1.jpg" width="130px" height="105px" class="img-circle" style="margin-left: 60px;padding-top: 3px;padding-bottom: 0px;" /> -->
+    
+    
+        </a>
+    </div>
+    
+    
+    
+    <div class="sidebar-wrapper">
+        <ul class="list-unstyled components nav ">
+    
+    
+    
+            <mat-progress-bar style="height: 10px;margin-left: 10%;margin-right: 10%;padding-right: 0px;width: 200px;" mode="indeterminate"
+                *ngIf="menuItems && menuItems.length==0">
+            </mat-progress-bar>
+    
+    
+    
+            <div *ngIf="menuItems && menuItems.length>0">
+                <div *ngFor="let menuItem of menuItems">
+                    <li routerLinkActive="active" class="{{menuItem.strClass}} nav-item" *ngIf="menuItem.boolHidden==false">
+                        <!-- route title -->
+                        <a class="nav-link" [routerLink]="[menuItem.strPath]" *ngIf="!menuItem.items || menuItem.items.length==0">
+                            <!-- <i *ngIf="menuItem.icon!==''" class="material-icons">{{menuItem.strIcon}}</i> -->
+                            <i *ngIf="menuItem.strIcon!==undefined"><img src="{{menuItem.strIcon}}" class="sidebarIcon img-circle" /></i>
+                            <div class="sidebarElement"> <span>{{menuItem.strTitle}}</span></div>
+    
+                        </a>
+    
+    
+                        <!-- Sub Menu Items -->
+    
+                        <a href="#{{menuItem.strPath}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link"
+                            *ngIf="menuItem.items.length ">
+                            <i *ngIf="menuItem.strIcon!==undefined"><img src="{{menuItem.strIcon}}" class="sidebarIcon img-circle" /></i>
+                            <span>{{menuItem.strTitle}}</span>
+    
+                        </a>
+    
+    
+    
+                        <ul class=" collapse list-unstyled ulPadding {{menuItem.strPath}}" id="{{menuItem.strPath}}">
+                            <div *ngIf="menuItem.items && menuItem.items.length>0">
+                                <div *ngFor="let SubMenuItem of menuItem.items">
+                                    <li routerLinkActive="active" class="{{SubMenuItem.strClass}} nav-item" *ngIf="SubMenuItem.boolHidden==false">
+    
+                                        <a class="nav-link" [routerLink]="[SubMenuItem.strPath]">
+    
+                                            <i *ngIf="SubMenuItem.strIcon!==undefined"><img src="{{SubMenuItem.strIcon}}"
+                                                    class="sidebarIcon img-circle" /></i>
+                                            <div class="sidebarElement"> <span>{{SubMenuItem.strTitle}}</span></div>
+    
+                                        </a>
+    
+                                    </li>
+                                </div>
+                            </div>
+    
+                        </ul>
+    
+                    </li>
+    
+                </div>
+            </div>
+    
+        </ul>
+    </div>
+    

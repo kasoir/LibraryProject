@@ -1,0 +1,16 @@
+<router-outlet *ngIf="errorPage == false" >
+
+    </router-outlet>
+    
+    
+        <mat-progress-bar   mode="indeterminate" *ngIf="loading==true"></mat-progress-bar>
+       
+    
+    
+     <app-error-page *ngIf="errorPage==true"></app-error-page>
+           
+    
+     <!-- <router-outlet>
+    
+        </router-outlet> -->
+    

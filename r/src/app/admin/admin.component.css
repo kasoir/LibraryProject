@@ -1,0 +1,26 @@
+.loader {
+    position: fixed;
+    border: 10px solid#7cb3c37a; /* Light grey */
+    border-top: 10px solid #369BB8; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    top: 30%;
+    left: 50%;
+    z-index: 30001;  
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .main-while-loading {
+    filter: brightness(50%) !important;
+  }
+  
